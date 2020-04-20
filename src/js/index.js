@@ -116,6 +116,7 @@ const callback = (addTaskDOM,e) => {
         </div>
         `
     projectDOM.appendChild(addTaskDOM);
+    addTaskSync();
 }
 
 const addTaskSync = () => {
