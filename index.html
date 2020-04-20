@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
+    <title>Todo App</title>
+</head>
+<body>
+<div class="page-content">
+    <!--PROJECTS NAVIGATION-->
+    <nav>
+        <h2>All projects</h2>
+        <ul>
+            <li class="project-checked" id="op-0" contenteditable="true">
+                Project #1
+            </li>
+            <li id="op-1" contenteditable="true">
+                Project #2
+            </li>
+            <li style="margin-top: 25px" class="add-project">
+                <i class="fas fa-plus fa"></i>
+            </li>
+        </ul>
+    </nav>
+    <section class="project-todos" id="0">
+        <div class="btn add-btn"><i class="fas fa-plus fa-2x"></i></div>
+    </section>
+    <section class="project-todos hidden" id="1">
+        <div class="btn add-btn"><i class="fas fa-plus fa-2x"></i></div>
+    </section>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
