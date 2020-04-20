@@ -1,11 +1,6 @@
 import * as toDo from './to-do';
 import '../css/styles.css';
-import Cookies from 'js-cookie';
 
-// Fetching all data
-if (Cookies.get('body')) {
-    document.body.innerHTML = Cookies.get('body');
-}
 
 // Universal projects list
 let projects = [];
@@ -37,52 +32,29 @@ const navSync = () => {
 
 const deleteTaskSync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
-        if (target && target.matches('.delete-btn')) {
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.delete-btn');
+        if (target) {
             const taskDOM = target.parentNode.parentNode;
-            const projectDOM = taskDOM.parentNode;
-            projectDOM.removeChild(taskDOM);
-        } else if (target && (target.matches("svg.fa-trash"))) {
-            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
             const projectDOM = taskDOM.parentNode;
             projectDOM.removeChild(taskDOM);
         }
     })
-    /*deleteTaskBtnsDOM.forEach(
-        (btn) => btn.addEventListener("click", (e) => {
-            const taskDOM = btn.parentNode.parentNode;
-            const projectDOM = taskDOM.parentNode;
-            projectDOM.removeChild(taskDOM);
-            projectsSync();
-        })
-    )*/
 }
 
 const editTaskSync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
-        if (target && target.matches('.edit-btn')) {
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.edit-btn');
+        if (target) {
             target.classList.add("hidden");
             const taskDOM = target.parentNode.parentNode;
             const taskTitleDOM = taskDOM.querySelector('h3');
             const taskDescDOM = taskDOM.querySelector('p');
             const checkBtnDOM = taskDOM.querySelector('.check-btn');
 
-            taskTitleDOM.setAttribute("contenteditable","true");
-            taskDescDOM.setAttribute("contenteditable","true");
-
-            checkBtnDOM.classList.remove("hidden");
-        } else if (target && (target.matches("svg.fa-edit"))) {
-            target.parentNode.parentNode.classList.add("hidden");
-            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
-            const taskTitleDOM = taskDOM.querySelector('h3');
-            const taskDescDOM = taskDOM.querySelector('p');
-            const checkBtnDOM = taskDOM.querySelector('.check-btn');
-
-            taskTitleDOM.setAttribute("contenteditable","true");
-            taskDescDOM.setAttribute("contenteditable","true");
+            taskTitleDOM.setAttribute("contenteditable", "true");
+            taskDescDOM.setAttribute("contenteditable", "true");
 
             checkBtnDOM.classList.remove("hidden");
         }
@@ -91,8 +63,8 @@ const editTaskSync = () => {
 
 const checkTaskSync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.check-btn');
         if (target && target.matches('.check-btn')) {
             target.classList.add("hidden");
             const taskDOM = target.parentNode.parentNode;
@@ -100,20 +72,8 @@ const checkTaskSync = () => {
             const taskDescDOM = taskDOM.querySelector('p');
             const editBtnDOM = taskDOM.querySelector('.edit-btn');
 
-            taskTitleDOM.setAttribute("contenteditable","false");
-            taskDescDOM.setAttribute("contenteditable","false");
-
-            editBtnDOM.classList.remove("hidden");
-        } else if (target && target.matches("svg.fa-check") && target.parentNode.parentNode.matches('.check-btn')) {
-            target.parentNode.parentNode.classList.add("hidden");
-            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
-            const taskTitleDOM = taskDOM.querySelector('h3');
-            const taskDescDOM = taskDOM.querySelector('p');
-            const editBtnDOM = taskDOM.querySelector('.edit-btn');
-
-
-            taskTitleDOM.setAttribute("contenteditable","false");
-            taskDescDOM.setAttribute("contenteditable","false");
+            taskTitleDOM.setAttribute("contenteditable", "false");
+            taskDescDOM.setAttribute("contenteditable", "false");
 
             editBtnDOM.classList.remove("hidden");
         }
@@ -121,7 +81,7 @@ const checkTaskSync = () => {
 }
 
 //addTaskSync Listener callback function
-const callback = (addTaskDOM,e) => {
+const callback = (addTaskDOM, e) => {
     const projectDOM = addTaskDOM.parentNode;
     projectDOM.removeChild(addTaskDOM);
     projectDOM.innerHTML += `
@@ -147,18 +107,10 @@ const callback = (addTaskDOM,e) => {
 
 const addTaskSync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
-        if (target && (target.matches(".add-btn"))) {
-            callback(target,e);
-        } else if (target && (target.matches("svg.fa-2x"))) {
-            const realTarget = target.parentNode.parentNode;
-            callback(realTarget,e);
-        } else if (target && target.matches("path")) {
-            const realTarget = target.parentNode.parentNode.parentNode;
-            if (realTarget.matches(".add-btn")) {
-                callback(realTarget,e);
-            }
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.add-btn');
+        if (target) {
+            callback(target, e);
         }
     })
 }
@@ -174,9 +126,9 @@ const updateDOM = () => {
 
 const doneSync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
-        if (target && target.matches('.done-status')){
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.done-status');
+        if (target) {
             const taskDOM = target.parentNode;
             taskDOM.classList.toggle("todo-done");
             target.classList.toggle("done");
@@ -186,15 +138,11 @@ const doneSync = () => {
 
 const prioritySync = () => {
     const navigation = document.body;
-    navigation.addEventListener("click",(e)=> {
-        const target = e.target;
-        if (target && target.matches('.priority')) {
+    navigation.addEventListener("click", (e) => {
+        const target = e.target.closest('.priority');
+        if (target) {
             const taskDOM = target.parentNode.parentNode;
             target.classList.toggle("important");
-            taskDOM.classList.toggle("todo-card-important");
-        } else if (target && (target.matches("svg.fa-exclamation"))) {
-            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
-            target.parentNode.parentNode.classList.toggle("important");
             taskDOM.classList.toggle("todo-card-important");
         }
     })
@@ -216,13 +164,13 @@ const projectsSync = () => {
         })
         projects.push(project);
     })
-    idCount = projects[projects.length-1].getId();
+    idCount = projects[projects.length - 1].getId();
 }
 
 const addProject = () => {
-    addProjectDOM.addEventListener("click",(e) => {
+    addProjectDOM.addEventListener("click", (e) => {
         const projectMenuParentDOM = document.querySelector('.page-content ul');
-            idCount++;
+        idCount++;
         projectMenuParentDOM.removeChild(addProjectDOM);
         projectMenuParentDOM.innerHTML += `
             <li id="op-${idCount}" contenteditable="true">
@@ -255,7 +203,7 @@ deleteTaskSync();
 doneSync();
 prioritySync();
 
-setInterval(updateDOM,1000);
+setInterval(updateDOM, 1000);
 
 
 
