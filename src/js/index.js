@@ -6,32 +6,35 @@ import '../css/styles.css';
 let projects = [];
 
 //DOM
-let projectListDOM = Array.from(document.querySelectorAll('.project-todos'));
-let addProjectDOM = document.querySelector('.add-project');
-const navProjects = document.querySelector('.page-content');
-
+const pageContentDOM = document.querySelector('.page-content');
+const navDOM = document.querySelector('nav');
+const navigation = document.body;
 
 // Universal id counter;
-let idCount = 0;
+let idCount = 1;
 
 // Deselecting every project but the one clicked
 const navSync = () => {
-    const projectMenuDOM = Array.from(document.querySelectorAll('.page-content ul li'));
-    projectMenuDOM.pop();
-    projectMenuDOM.forEach((project) => project.addEventListener("click", (e) => {
-        let projectMenuId = project.id[project.id.length - 1];
-        // Modifying the navigation bar
-        projectMenuDOM.forEach((el) => el.classList.remove('project-checked'));
-        e.target.classList.add("project-checked");
-        // Showing only our project;
-        projectListDOM.forEach(elo => {
-            (elo.id === projectMenuId) ? elo.classList.remove("hidden") : elo.classList.add("hidden");
-        });
-    }))
+    navDOM.addEventListener("click",(e) => {
+        const target = e.target.closest('.project-option');
+        if (target) {
+            const projectNavigationAll = document.querySelectorAll('.project-option');
+            const projectNavigationId = target.id[target.id.length-1];
+            const projectsDOM = pageContentDOM.querySelectorAll('.project-todos');
+
+            projectNavigationAll.forEach(pjNav => pjNav.classList.remove("project-checked"));
+            target.classList.add("project-checked");
+
+            projectsDOM.forEach(pj => {
+                (pj.id === projectNavigationId) ?
+                pj.classList.remove("hidden") : pj.classList.add("hidden")
+            })
+        }
+    })
 }
 
+// Delete a task button
 const deleteTaskSync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.delete-btn');
         if (target) {
@@ -42,8 +45,8 @@ const deleteTaskSync = () => {
     })
 }
 
+// The edit a task button, happens before checking
 const editTaskSync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.edit-btn');
         if (target) {
@@ -61,8 +64,8 @@ const editTaskSync = () => {
     })
 }
 
+// Validate changes to a task button, happens after editing
 const checkTaskSync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.check-btn');
         if (target && target.matches('.check-btn')) {
@@ -84,7 +87,7 @@ const checkTaskSync = () => {
 const callback = (addTaskDOM, e) => {
     const projectDOM = addTaskDOM.parentNode;
     projectDOM.removeChild(addTaskDOM);
-    projectDOM.innerHTML += `
+    projectDOM.insertAdjacentHTML('beforeend',`
                <div class="todo-card todo-card-important">
             <h3>New task</h3>
             <div class="btn-wrapper" style="grid-area: edit;justify-self: end;display: flex; justify-content: end">
@@ -101,12 +104,12 @@ const callback = (addTaskDOM, e) => {
             <span class="date-due">15/03/2200</span>
             <span class="btn done-status"><i class="fas fa-check"></i></span>
         </div>
-        `
+        `);
     projectDOM.appendChild(addTaskDOM);
 }
 
+// The "Task add (+)" button
 const addTaskSync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.add-btn');
         if (target) {
@@ -115,17 +118,8 @@ const addTaskSync = () => {
     })
 }
 
-const updateDOM = () => {
-    projectListDOM = Array.from(document.querySelectorAll('.project-todos'));
-    addProjectDOM = document.querySelector('.add-project');
-
-    projectsSync();
-    addProject();
-}
-
-
+// The "done" status button for tasks
 const doneSync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.done-status');
         if (target) {
@@ -136,8 +130,8 @@ const doneSync = () => {
     })
 }
 
+// Setting priority button, adds a border to the task
 const prioritySync = () => {
-    const navigation = document.body;
     navigation.addEventListener("click", (e) => {
         const target = e.target.closest('.priority');
         if (target) {
@@ -148,7 +142,8 @@ const prioritySync = () => {
     })
 }
 
-const projectsSync = () => {
+// Syncing the data model --DEPRECATED--
+/*const projectsSync = () => {
     projects = [];
     projectListDOM.forEach(projectDOM => {
         const project = toDo.Project(projectDOM.id);
@@ -165,36 +160,36 @@ const projectsSync = () => {
         projects.push(project);
     })
     idCount = projects[projects.length - 1].getId();
-}
+}*/
 
+// Add a project button, in the navbar (+)
 const addProject = () => {
-    addProjectDOM.addEventListener("click", (e) => {
-        const projectMenuParentDOM = document.querySelector('.page-content ul');
-        idCount++;
-        projectMenuParentDOM.removeChild(addProjectDOM);
-        projectMenuParentDOM.innerHTML += `
-            <li id="op-${idCount}" contenteditable="true">
+    navDOM.addEventListener("click", (e) => {
+        const target = e.target.closest('.add-project');
+        if (target) {
+            const projectMenuParentDOM = document.querySelector('.page-content ul');
+            idCount++;
+            projectMenuParentDOM.removeChild(projectMenuParentDOM.lastChild);
+            projectMenuParentDOM.insertAdjacentHTML('beforeend', `
+            <li class ="project-option" id="op-${idCount}" contenteditable="true">
                 New project
             </li>
-        `
-        projectMenuParentDOM.appendChild(addProjectDOM);
-        navProjects.innerHTML += `
-        <section class="project-todos hidden" id="${idCount}">
-            <div class="btn add-btn"><i class="fas fa-plus fa-2x"></i></div>
-        </section>
-        `
-        navSync();
+            `);
+            projectMenuParentDOM.appendChild(target);
+            pageContentDOM.insertAdjacentHTML('beforeend', `
+            <section class="project-todos hidden" id="${idCount}">
+                <div class="btn add-btn"><i class="fas fa-plus fa-2x"></i></div>
+            </section>
+            `)
+        }
     })
 }
 
-
-// Initial sync
 navSync();
-projectsSync();
-
-addTaskSync();
 
 addProject();
+
+addTaskSync();
 
 editTaskSync();
 checkTaskSync();
@@ -202,8 +197,3 @@ deleteTaskSync();
 
 doneSync();
 prioritySync();
-
-setInterval(updateDOM, 1000);
-
-
-

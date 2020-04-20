@@ -10,6 +10,8 @@ VARIABLES
     --dark: #4A5568;
     --light: #F7FAFC;
     --shadow: 0 8px 15px rgba(104, 104, 104, 0.3);
+    --important: #6B46C1
+;
 }
 
 * {
@@ -93,9 +95,18 @@ SECTION
     box-shadow: var(--shadow);
 }
 
+.todo-card:hover {
+    background: #718096;
+    color: #2D3748;
+}
+
 .todo-done {
-    background:#63B3ED
-;
+    background:#63B3ED;
+}
+
+.todo-done:hover {
+    background: #4299E1;
+color:#2A4365;
 }
 
 .priority {
@@ -115,7 +126,7 @@ h3[contenteditable="true"], p[contenteditable="true"] {
 }
 
 .todo-card-important {
-    border: solid #C53030 5px;
+    border: solid var(--important) 5px;
 }
 
 .todo-card h3 {
@@ -191,6 +202,20 @@ h3[contenteditable="true"], p[contenteditable="true"] {
     display: flex;
     box-shadow: var(--shadow);
     justify-self: end;
+    cursor: pointer;
+}
+
+
+.btn:hover {
+    background-color: var(--dark);
+    color: var(--primary-dark);
+}
+
+.add-btn:hover {
+}
+
+.add-project {
+    cursor: pointer;
 }
 
 i {
