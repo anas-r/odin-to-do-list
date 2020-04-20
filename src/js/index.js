@@ -1,9 +1,9 @@
 import * as toDo from './to-do';
 import '../css/styles.css';
+import * as Cookies from 'js-cookie';
 
 
-// Universal projects list
-let projects = [];
+//
 
 //DOM
 const pageContentDOM = document.querySelector('.page-content');
