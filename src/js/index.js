@@ -11,12 +11,7 @@ if (Cookies.get('body')) {
 let projects = [];
 
 //DOM
-let doneBtnsDOM = document.querySelectorAll('.done-status');
-let priorityBtnsDOM = document.querySelectorAll('.priority');
 let projectListDOM = Array.from(document.querySelectorAll('.project-todos'));
-let deleteTaskBtnsDOM = document.querySelectorAll('.delete-btn');
-let editTaskBtnsDOM = document.querySelectorAll('.edit-btn');
-let checkTaskBtnsDOM = document.querySelectorAll('.check-btn');
 let addProjectDOM = document.querySelector('.add-project');
 const navProjects = document.querySelector('.page-content');
 
@@ -36,33 +31,41 @@ const navSync = () => {
         // Showing only our project;
         projectListDOM.forEach(elo => {
             (elo.id === projectMenuId) ? elo.classList.remove("hidden") : elo.classList.add("hidden");
-/*            if (elo.id === projectMenuId) {
-                const addTaskBtn =                 document
-                    .getElementById(`${elo.id}`)
-                    .querySelector('.add-btn');
-                addTaskBtn
-                    .addEventListener("click",(e)=>{callback(addTaskSync(),e)});
-            }*/
         });
     }))
 }
 
 const deleteTaskSync = () => {
-    deleteTaskBtnsDOM.forEach(
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        if (target && target.matches('.delete-btn')) {
+            const taskDOM = target.parentNode.parentNode;
+            const projectDOM = taskDOM.parentNode;
+            projectDOM.removeChild(taskDOM);
+        } else if (target && (target.matches("svg.fa-trash"))) {
+            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
+            const projectDOM = taskDOM.parentNode;
+            projectDOM.removeChild(taskDOM);
+        }
+    })
+    /*deleteTaskBtnsDOM.forEach(
         (btn) => btn.addEventListener("click", (e) => {
             const taskDOM = btn.parentNode.parentNode;
             const projectDOM = taskDOM.parentNode;
             projectDOM.removeChild(taskDOM);
             projectsSync();
         })
-    )
+    )*/
 }
 
 const editTaskSync = () => {
-    editTaskBtnsDOM.forEach(
-        (btn) => {btn.addEventListener("click", (e) => {
-            btn.classList.add("hidden");
-            const taskDOM = btn.parentNode.parentNode;
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        if (target && target.matches('.edit-btn')) {
+            target.classList.add("hidden");
+            const taskDOM = target.parentNode.parentNode;
             const taskTitleDOM = taskDOM.querySelector('h3');
             const taskDescDOM = taskDOM.querySelector('p');
             const checkBtnDOM = taskDOM.querySelector('.check-btn');
@@ -71,25 +74,50 @@ const editTaskSync = () => {
             taskDescDOM.setAttribute("contenteditable","true");
 
             checkBtnDOM.classList.remove("hidden");
-        })}
-    )
+        } else if (target && (target.matches("svg.fa-edit"))) {
+            target.parentNode.parentNode.classList.add("hidden");
+            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
+            const taskTitleDOM = taskDOM.querySelector('h3');
+            const taskDescDOM = taskDOM.querySelector('p');
+            const checkBtnDOM = taskDOM.querySelector('.check-btn');
+
+            taskTitleDOM.setAttribute("contenteditable","true");
+            taskDescDOM.setAttribute("contenteditable","true");
+
+            checkBtnDOM.classList.remove("hidden");
+        }
+    })
 }
 
 const checkTaskSync = () => {
-    checkTaskBtnsDOM.forEach(
-        (btn) => {btn.addEventListener("click", (e) => {
-            btn.classList.add("hidden");
-            const taskDOM = btn.parentNode.parentNode;
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        if (target && target.matches('.check-btn')) {
+            target.classList.add("hidden");
+            const taskDOM = target.parentNode.parentNode;
             const taskTitleDOM = taskDOM.querySelector('h3');
             const taskDescDOM = taskDOM.querySelector('p');
+            const editBtnDOM = taskDOM.querySelector('.edit-btn');
 
             taskTitleDOM.setAttribute("contenteditable","false");
             taskDescDOM.setAttribute("contenteditable","false");
 
-            const editBtnDOM = taskDOM.querySelector('.edit-btn');
             editBtnDOM.classList.remove("hidden");
-        })}
-    )
+        } else if (target && target.matches("svg.fa-check") && target.parentNode.parentNode.matches('.check-btn')) {
+            target.parentNode.parentNode.classList.add("hidden");
+            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
+            const taskTitleDOM = taskDOM.querySelector('h3');
+            const taskDescDOM = taskDOM.querySelector('p');
+            const editBtnDOM = taskDOM.querySelector('.edit-btn');
+
+
+            taskTitleDOM.setAttribute("contenteditable","false");
+            taskDescDOM.setAttribute("contenteditable","false");
+
+            editBtnDOM.classList.remove("hidden");
+        }
+    })
 }
 
 //addTaskSync Listener callback function
@@ -121,7 +149,6 @@ const addTaskSync = () => {
     const navigation = document.body;
     navigation.addEventListener("click",(e)=> {
         const target = e.target;
-        console.log(target);
         if (target && (target.matches(".add-btn"))) {
             callback(target,e);
         } else if (target && (target.matches("svg.fa-2x"))) {
@@ -137,37 +164,40 @@ const addTaskSync = () => {
 }
 
 const updateDOM = () => {
-    doneBtnsDOM = document.querySelectorAll('.done-status');
-    priorityBtnsDOM = document.querySelectorAll('.priority');
     projectListDOM = Array.from(document.querySelectorAll('.project-todos'));
-    deleteTaskBtnsDOM = document.querySelectorAll('.delete-btn');
-    editTaskBtnsDOM = document.querySelectorAll('.edit-btn');
-    checkTaskBtnsDOM = document.querySelectorAll('.check-btn');
     addProjectDOM = document.querySelector('.add-project');
-    doneSync();
-    prioritySync();
-    editTaskSync();
-    deleteTaskSync();
-    checkTaskSync();
+
     projectsSync();
     addProject();
 }
 
 
 const doneSync = () => {
-    doneBtnsDOM.forEach(btn => btn.addEventListener("click",(e) => {
-        const taskDOM = btn.parentNode;
-        taskDOM.classList.toggle("todo-done");
-        btn.classList.toggle("done");
-    }))
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        if (target && target.matches('.done-status')){
+            const taskDOM = target.parentNode;
+            taskDOM.classList.toggle("todo-done");
+            target.classList.toggle("done");
+        }
+    })
 }
 
 const prioritySync = () => {
-    priorityBtnsDOM.forEach(btn => btn.addEventListener("click",(e) => {
-        const taskDOM = btn.parentNode.parentNode;
-        btn.classList.toggle("important");
-        taskDOM.classList.toggle("todo-card-important");
-    }))
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        if (target && target.matches('.priority')) {
+            const taskDOM = target.parentNode.parentNode;
+            target.classList.toggle("important");
+            taskDOM.classList.toggle("todo-card-important");
+        } else if (target && (target.matches("svg.fa-exclamation"))) {
+            const taskDOM = target.parentNode.parentNode.parentNode.parentNode;
+            target.parentNode.parentNode.classList.toggle("important");
+            taskDOM.classList.toggle("todo-card-important");
+        }
+    })
 }
 
 const projectsSync = () => {
@@ -213,15 +243,19 @@ const addProject = () => {
 // Initial sync
 navSync();
 projectsSync();
-addTaskSync();
-addProject();
-Cookies.set("")
-setInterval(updateDOM,1000);
-setInterval(() => {
-    Cookies.set('body',document.body.innerHTML);
-},500)
 
-// Auto refreshing the project list
+addTaskSync();
+
+addProject();
+
+editTaskSync();
+checkTaskSync();
+deleteTaskSync();
+
+doneSync();
+prioritySync();
+
+setInterval(updateDOM,1000);
 
 
 
