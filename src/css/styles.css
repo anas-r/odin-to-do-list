@@ -1,0 +1,223 @@
+/*
+VARIABLES
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap');
+
+:root {
+    --primary: #CBD5E0;
+    --primary-dark: #A0AEC0;
+    --dark: #4A5568;
+    --light: #F7FAFC;
+    --shadow: 0 8px 15px rgba(104, 104, 104, 0.3);
+}
+
+* {
+    transition: margin 0.4s ease-in-out, background 0.4s ease-in-out, border 0.4s ease-in-out;
+}
+
+html {
+    box-sizing: border-box;
+    font-family: 'Signika', sans-serif;
+    color: var(--dark);
+}
+
+body {
+    background: var(--light);
+    margin: 128px 200px;
+}
+
+.page-content {
+    display: grid;
+    grid-template-areas: 'nav section section section';
+    align-items: stretch;
+    border-radius: 25px;
+    box-shadow: var(--shadow);
+}
+
+/*
+NAVIGATION
+ */
+
+nav {
+    display: grid;
+    align-items: start;
+    background: var(--primary-dark);
+    grid-template-rows: minmax(20px, max-content) 1fr;
+    border-radius: 25px 0 0 25px;
+    grid-area: nav;
+}
+
+nav h2, nav li {
+    padding: 0 25px;
+}
+
+nav h2 {
+    margin-bottom: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.project-checked {
+    background: var(--primary);
+}
+
+
+/*
+SECTION
+ */
+
+.project-todos {
+    background: var(--primary);
+    border-radius: 0 25px 25px 0;
+    grid-area: section;
+    grid-template-columns: 1fr;
+    display: grid;
+    grid-gap: 25px;
+    padding: 25px;
+    align-items: center;
+}
+
+.todo-card {
+    background: var(--primary-dark);
+    display: grid;
+    padding: 25px;
+    border-radius: 15px;
+    grid-template-areas: 'title title title edit' 'desc desc desc desc' 'date date date done';
+    grid-column-gap: 15px;
+    box-shadow: var(--shadow);
+}
+
+.todo-done {
+    background:#63B3ED
+;
+}
+
+.priority {
+    background: var(--primary);
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    grid-area: priority;
+    justify-self: center;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+h3[contenteditable="true"], p[contenteditable="true"] {
+    background-color: var(--primary);
+}
+
+.todo-card-important {
+    border: solid #C53030 5px;
+}
+
+.todo-card h3 {
+    grid-area: title;
+    margin: 0;
+    align-self: center;
+}
+
+.delete-btn {
+    background: var(--primary);
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    grid-area: close;
+    justify-self: start;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background: var(--primary);
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    grid-area: edit;
+    justify-self: end;
+    margin: 0 5px;
+    cursor: pointer;
+
+}
+
+
+.check-btn {
+    background: var(--primary);
+    display: flex;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    grid-area: edit;
+    justify-self: end;
+    margin: 0 5px;
+    cursor: pointer;
+
+}
+
+
+.todo-card p {
+    grid-area: desc;
+    margin-bottom: 2em;
+}
+
+.date-due {
+    grid-area: date;
+    text-align: center;
+    background: var(--primary);
+    border-radius: 25px;
+}
+
+.done-status {
+    grid-area: done;
+    text-align: center;
+    background: var(--primary);
+    border-radius: 15px;
+}
+
+.add-btn {
+    background: var(--primary-dark);
+    width: 55px;
+    height: 55px;
+    border-radius: 50px;
+    display: flex;
+    box-shadow: var(--shadow);
+    justify-self: end;
+}
+
+i {
+    margin: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    body {
+        margin: 62px 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-content {
+        grid-template-areas: 'nav' 'section' 'section' 'section';
+        justify-items: stretch;
+    }
+
+    nav {
+        border-radius: 25px 25px 0 0;
+    }
+
+    .project-todos {
+        border-radius: 0 0 25px 25px;
+    }
+}
