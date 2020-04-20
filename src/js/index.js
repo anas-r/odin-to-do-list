@@ -17,7 +17,6 @@ let projectListDOM = Array.from(document.querySelectorAll('.project-todos'));
 let deleteTaskBtnsDOM = document.querySelectorAll('.delete-btn');
 let editTaskBtnsDOM = document.querySelectorAll('.edit-btn');
 let checkTaskBtnsDOM = document.querySelectorAll('.check-btn');
-let addTaskBtnsDOM = document.querySelectorAll('.add-btn');
 let addProjectDOM = document.querySelector('.add-project');
 const navProjects = document.querySelector('.page-content');
 
@@ -116,12 +115,24 @@ const callback = (addTaskDOM,e) => {
         </div>
         `
     projectDOM.appendChild(addTaskDOM);
-    addTaskSync();
 }
 
 const addTaskSync = () => {
-    addTaskBtnsDOM.forEach(addTaskDOM => {
-        addTaskDOM.addEventListener("click", (e) =>callback(addTaskDOM,e));
+    const navigation = document.body;
+    navigation.addEventListener("click",(e)=> {
+        const target = e.target;
+        console.log(target);
+        if (target && (target.matches(".add-btn"))) {
+            callback(target,e);
+        } else if (target && (target.matches("svg.fa-2x"))) {
+            const realTarget = target.parentNode.parentNode;
+            callback(realTarget,e);
+        } else if (target && target.matches("path")) {
+            const realTarget = target.parentNode.parentNode.parentNode;
+            if (realTarget.matches(".add-btn")) {
+                callback(realTarget,e);
+            }
+        }
     })
 }
 
@@ -132,7 +143,6 @@ const updateDOM = () => {
     deleteTaskBtnsDOM = document.querySelectorAll('.delete-btn');
     editTaskBtnsDOM = document.querySelectorAll('.edit-btn');
     checkTaskBtnsDOM = document.querySelectorAll('.check-btn');
-    addTaskBtnsDOM = document.querySelectorAll('.add-btn');
     addProjectDOM = document.querySelector('.add-project');
     doneSync();
     prioritySync();
@@ -177,7 +187,6 @@ const projectsSync = () => {
         projects.push(project);
     })
     idCount = projects[projects.length-1].getId();
-    console.log(idCount);
 }
 
 const addProject = () => {
@@ -197,9 +206,6 @@ const addProject = () => {
         </section>
         `
         navSync();
-        const newAddTaskBtn = document.getElementById(`${idCount}`).querySelector('.add-btn');
-        console.log(newAddTaskBtn);
-        newAddTaskBtn.addEventListener("click",(e)=>{callback(newAddTaskBtn,e)});
     })
 }
 
@@ -213,7 +219,6 @@ Cookies.set("")
 setInterval(updateDOM,1000);
 setInterval(() => {
     Cookies.set('body',document.body.innerHTML);
-    console.log(Cookies.get('body'));
 },500)
 
 // Auto refreshing the project list
