@@ -57,7 +57,7 @@ const binderTask = (task) => {
 }
 
 const updateProject = () => {
-    navDOM.addEventListener("keyup", (e) => {
+    navDOM.addEventListener("onkeydown", (e) => {
         const target = e.target;
         if (target.matches('.project-option')) {
             const projectId = parseInt(target.id.split("-")[target.id.split("-").length - 1]);
@@ -77,7 +77,7 @@ const updateTask = (property) => {
     let taskProjectId;
     let taskOwnId;
     if (property === 'name' || property === 'description') {
-        navigation.addEventListener("keyup", (e) => {
+        navigation.addEventListener("onkeydown", (e) => {
             const target = e.target;
             if (target.matches(`[data-bind="${property}"]`)) {
                 taskDOM = target.closest('.todo-card');
